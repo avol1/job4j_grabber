@@ -11,6 +11,8 @@ public class SqlRuParse {
         Elements row = doc.select("td[style].altCol");
         for (Element td : row) {
             Element parent = td.parent();
+            System.out.println(parent.child(1).getElementsByIndexEquals(0).attr("href"));
+            System.out.println(parent.child(1).getElementsByIndexEquals(0).text());
             System.out.println(parent.child(5).text());
         }
     }
