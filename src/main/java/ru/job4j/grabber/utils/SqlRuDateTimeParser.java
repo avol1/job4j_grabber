@@ -29,9 +29,13 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     private static final String DATE_PATTERN = "d-MMM-yy";
     private static final String TIME_PATTERN = "HH:mm";
 
+    private static final DateTimeFormatter DATE_FORMATTER =
+            DateTimeFormatter.ofPattern(DATE_PATTERN, Locale.US);
+    private static final DateTimeFormatter TIME_FORMATTER =
+            DateTimeFormatter.ofPattern(TIME_PATTERN);
+
     @Override
     public LocalDateTime parse(String parse) {
-        LocalDateTime dateTime = null;
 
         String[] dateAndTime = parse.split(",");
         String[] dateParts = dateAndTime[0].split(" ");
@@ -46,13 +50,12 @@ public class SqlRuDateTimeParser implements DateTimeParser {
         LocalDate date = null;
 
         if (dateParts.length == 3) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN, Locale.US);
             dateParts[1] = MONTHS.get(dateParts[1]);
-            date = LocalDate.parse(String.join("-", dateParts).trim(), formatter);
+            date = LocalDate.parse(String.join("-", dateParts).trim(), DATE_FORMATTER);
         } else if (dateParts.length == 1) {
-            if (dateParts[0].equals(TODAY)) {
+            if (TODAY.equals(dateParts[0])) {
                 date = LocalDate.now();
-            } else if (dateParts[0].equals(YESTERDAY)) {
+            } else if (YESTERDAY.equals(dateParts[0])) {
                 date = LocalDate.now().minus(Period.ofDays(1));
             }
         }
@@ -61,7 +64,6 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     }
 
     private LocalTime getTime(String time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_PATTERN);
-        return LocalTime.parse(time.trim(), formatter);
+        return LocalTime.parse(time.trim(), TIME_FORMATTER);
     }
 }
