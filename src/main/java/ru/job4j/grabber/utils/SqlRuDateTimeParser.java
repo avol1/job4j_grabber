@@ -24,8 +24,10 @@ public class SqlRuDateTimeParser implements DateTimeParser {
             Map.entry("дек", "Dec")
     );
 
-    public static final String TODAY = "сегодня";
-    public static final String YESTERDAY = "вчера";
+    private static final String TODAY = "сегодня";
+    private static final String YESTERDAY = "вчера";
+    private static final String DATE_PATTERN = "d-MMM-yy";
+    private static final String TIME_PATTERN = "HH:mm";
 
     @Override
     public LocalDateTime parse(String parse) {
@@ -44,7 +46,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
         LocalDate date = null;
 
         if (dateParts.length == 3) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yy", Locale.US);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN, Locale.US);
             dateParts[1] = MONTHS.get(dateParts[1]);
             date = LocalDate.parse(String.join("-", dateParts).trim(), formatter);
         } else if (dateParts.length == 1) {
@@ -59,7 +61,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     }
 
     private LocalTime getTime(String time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_PATTERN);
         return LocalTime.parse(time.trim(), formatter);
     }
 }
