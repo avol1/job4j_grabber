@@ -1,5 +1,6 @@
 package ru.job4j.grabber;
 
+import org.postgresql.util.PSQLException;
 import ru.job4j.model.Post;
 import ru.job4j.quartz.AlertRabbit;
 
